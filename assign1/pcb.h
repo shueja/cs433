@@ -1,12 +1,10 @@
 /**
  * Assignment 1: priority queue of processes
  * @file pcb.h
- * @author ??? (TODO: your name)
+ * @author Jeremiah Shue
  * @brief This is the header file for the PCB class, a process control block.
  * @version 0.1
  */
-//You must complete the all parts marked as "TODO". Delete "TODO" after you are done.
-// Remember to addPCB sufficient comments to your code
 
 #pragma once
 #include <iostream>
@@ -79,18 +77,18 @@ public:
 
     /**
      * @brief Change the state of the PCB.
-     * @param state
+     * @param state The new state of the PCB
      */
     void setState(ProcState state) {
-        // TODO: add your code here
+        this->state = state;
     }
 
     /**
      * @brief Change the priority of the PCB.
-     * @param priority
+     * @param priority The new priority of the PCB
      */
     void setPriority(unsigned int priority) {
-        // TODO: add your code here
+        this->priority = priority;
     }
 
     /**

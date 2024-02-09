@@ -1,13 +1,12 @@
 /**
  * Assignment 1: priority queue of processes
  * @file pcbtable.h
- * @author ??? (TODO: your name)
+ * @author Jeremiah Shue
  * @brief This is the implementation file for the PCBTable class.
- * //You must complete the all parts marked as "TODO". Delete "TODO" after you are done.
- * // Remember to add sufficient comments to your code
  */
 
 #include "pcbtable.h"
+#include <list>
 
 /**
  * @brief Construct a new PCBTable object of the given size (number of PCBs)
@@ -15,7 +14,10 @@
  * @param size: the capacity of the PCBTable
  */
 PCBTable::PCBTable(int size) {
-   // TODO: add your code here
+    table.clear();
+    for (int i = 0; i < size; i++) {
+        table.push_back(new PCB(i));
+    }
 }
 
 /**
@@ -23,8 +25,10 @@ PCBTable::PCBTable(int size) {
  *
  */
 PCBTable::~PCBTable() {
-   // TODO: add your code here
-   // Delete all the PCBs in the table
+    for (auto it = table.begin(); it != table.end(); it++) {
+        delete *it;
+    }
+    table.clear();
 }
 
 /**
@@ -34,8 +38,11 @@ PCBTable::~PCBTable() {
  * @return PCB*: pointer to the PCB at index "idx"
  */
 PCB* PCBTable::getPCB(unsigned int idx) {
-    // TODO: add your code here
-    return NULL;
+    auto it = table.begin();
+    for (int i = 0; i < idx; i++) {
+        it++;
+    }
+    return *it;
 }
 
 /**
@@ -44,6 +51,9 @@ PCB* PCBTable::getPCB(unsigned int idx) {
  * @param pcb: the PCB to add
  */
 void PCBTable::addPCB(PCB *pcb, unsigned int idx) {
-    // TODO: add your code here
-    // Add a PCB pointer to the PCBTable at index idx.
+    auto it = table.begin();
+    for (int i = 0; i < idx; i++) {
+        it++;
+    }
+    table.insert(it, pcb);
 }

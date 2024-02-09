@@ -1,25 +1,55 @@
-#include <iostream>
-#include "readyqueue.h"
+#include "heap.h"
 
-using namespace std;
+// @brief gets the maximum value in the heap
+// @return the highest value integer in the heap
+T Heap::getMax() const
+{
+    if (count <= 0)
+    {
+        return nullptr;
+    }
+    else
+    {
+        return heaparray[0];
+    }
+}
 
-/**
- * @brief Constructor for the ReadyQueue class.
- */
- ReadyQueue::ReadyQueue()  {
-    capacity = 100;
+// @brief default constructor. Construct an empty heap with initial capacity
+Heap::Heap(int capacity)
+{
+    this->capacity = capacity;
     count = 0;
     heaparray = new T[capacity];
- }
+}
 
-/**
- *@brief Destructor
-*/
-ReadyQueue::~ReadyQueue() {
+// @brief destructor
+Heap::~Heap()
+{
     delete[] heaparray;
 }
 
-ReadyQueue::ReadyQueue(const ReadyQueue &other) {
+/**
+ * @brief constructor to build a heap from an array of values
+ * @param values array of values to be added to the heap
+ * @param length the size of the array
+ */
+Heap::Heap(T *values, int length)
+{
+    heaparray = new T[length];
+    capacity = length;
+    count = 0;
+    for (int i = 0; i < length; i++)
+    {
+        insert(values[i]);
+    }
+}
+
+/**
+ * @brief Copy constructor
+ * @param other the heap to be copied
+ */
+Heap::Heap(const Heap &other)
+{
     this->capacity = other.capacity;
     this->count = other.count;
     this->heaparray = new T[count];
@@ -29,8 +59,14 @@ ReadyQueue::ReadyQueue(const ReadyQueue &other) {
     }
 }
 
-ReadyQueue& ReadyQueue::operator=(const ReadyQueue &other) {
-        if (&other == this)
+/**
+ * @brief Assignment operator
+ * @param other the heap to be copied
+ * @return Heap& a reference to the heap
+ */
+Heap &Heap::operator=(const Heap &other)
+{
+    if (&other == this)
     {
         return *this;
     }
@@ -45,53 +81,9 @@ ReadyQueue& ReadyQueue::operator=(const ReadyQueue &other) {
     return *this;
 }
 /**
- * @brief Add a PCB representing a process into the ready queue.
- *
- * @param pcbPtr: the pointer to the PCB to be added
- */
-void ReadyQueue::addPCB(PCB *pcbPtr) {
-    pcbPtr->setState(ProcState::READY);
-    insert(pcbPtr);
-    // When adding a PCB to the queue, you must change its state to READY.
-}
-
-/**
- * @brief Remove and return the PCB with the highest priority from the queue
- *
- * @return PCB*: the pointer to the PCB with the highest priority
- */
-PCB* ReadyQueue::removePCB() {
-    PCB* max = removeMax();
-    max->setState(ProcState::RUNNING);
-    return max;
-    // When removing a PCB from the queue, you must change its state to RUNNING.
-}
-
-
-/**
- * @brief Display the PCBs in the queue.
- */
-void ReadyQueue::displayAll() {
-    printHeap();
-}
-// @brief gets the maximum value in the heap
-// @return the highest value integer in the heap
-T ReadyQueue::getMax() const
-{
-    if (count <= 0)
-    {
-        return nullptr;
-    }
-    else
-    {
-        return heaparray[0];
-    }
-}
-
-/**
  * @brief   organizes the values in the heap to satisfy heap property.
  */
-void ReadyQueue::heapify()
+void Heap::heapify()
 {
     // Heapify numbers array
     int i = count / 2 - 1;
@@ -105,7 +97,7 @@ void ReadyQueue::heapify()
 /**
  * @brief  Runs percolate down on the heap for the node stored in index.
  */
-void ReadyQueue::percolateDownSubheap(int index, int size)
+void Heap::percolateDownSubheap(int index, int size)
 {
 
     int childIndex = 2 * index + 1;
@@ -139,7 +131,7 @@ void ReadyQueue::percolateDownSubheap(int index, int size)
     }
 }
 
-void ReadyQueue::percolateDown(int index)
+void Heap::percolateDown(int index)
 {
     percolateDownSubheap(index, count);
 }
@@ -147,7 +139,7 @@ void ReadyQueue::percolateDown(int index)
 /**
  * @brief  Runs percolate up on the heap for the node stored in index.
  */
-void ReadyQueue::percolateUp(int index)
+void Heap::percolateUp(int index)
 {
     while (index > 0)
     {
@@ -164,10 +156,9 @@ void ReadyQueue::percolateUp(int index)
     }
 }
 
-void ReadyQueue::resizeArray()
+void Heap::resizeArray()
 {
-    cout << "resize" << endl;
-    int newCapacity = capacity * 4;
+    int newCapacity = capacity * 2;
     T *newArray = new T[newCapacity];
     if (newArray)
     {
@@ -186,7 +177,7 @@ void ReadyQueue::resizeArray()
  * @brief  inserts a value into the heap
  *
  */
-void ReadyQueue::insert(T value)
+void Heap::insert(T value)
 {
     if (count == capacity)
     {
@@ -202,7 +193,7 @@ void ReadyQueue::insert(T value)
  * @brief  Removes the max value from the heap
  * @return the value that was removed
  */
-T ReadyQueue::removeMax()
+T Heap::removeMax()
 {
     T maxValue = heaparray[0];
     T replaceValue = heaparray[--count];
@@ -215,7 +206,7 @@ T ReadyQueue::removeMax()
 }
 
 // // @brief converts the heap into a string
-// string ReadyQueue::toString()
+// string Heap::toString()
 // {
 //     string s = "[ ";
 //     for (int i = 0; i < count; i++)
@@ -229,7 +220,7 @@ T ReadyQueue::removeMax()
 /**
  * @brief  Prints the values in the heap
  */
-void ReadyQueue::printHeap()
+void Heap::printHeap()
 {
     for (int i = 0; i < count; i++)
     {
@@ -253,9 +244,38 @@ void printArray(T values[], int length)
 /**
  * @brief  Swaps the values in the heap at index1 and index2
  */
-void ReadyQueue::swap(int index1, int index2)
+void Heap::swap(int index1, int index2)
 {
     T temp = heaparray[index1];
     heaparray[index1] = heaparray[index2];
     heaparray[index2] = temp;
+}
+
+/**
+ * @brief  Sorts the values of an array by using the heap
+ */
+void heapSort(T values[], int length)
+{
+    cout << "Array Before Sorting: \n";
+    printArray(values, length);
+
+    Heap heap(values, length);
+    for (int i = 0; i < length; i++)
+    {
+        values[length - i - 1] = heap.removeMax();
+    }
+    cout << "Array After Sorting: \n";
+    printArray(values, length);
+}
+
+/**
+ * @brief Change the key of the element at position i to the new value.
+ *        It maintains the heap property.
+ * @param i the position of the element to be decreased
+ * @param value the new value
+ */
+void Heap::changeKey(int i, T new_val)
+{
+    heaparray[i] = new_val;
+    heapify();
 }

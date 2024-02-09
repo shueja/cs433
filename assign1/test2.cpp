@@ -3,8 +3,6 @@
  * @file test1.cpp
  * @author
  * @brief This file tests the correctness of your implementation of the readyqueue and pcbtable
- * //You must complete the all parts marked as "TODO". Delete "TODO" after you are done.
- * // Remember to add sufficient comments to your code
  */
 #include <chrono>
 #include <iostream>
