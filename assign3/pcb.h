@@ -1,12 +1,10 @@
 /**
  * Assignment 1: priority queue of processes
  * @file pcb.h
- * @author ??? (TODO: your name)
+ * @author Jeremiah Shue
  * @brief This is the header file for the PCB class, a process control block.
  * @version 0.1
  */
-//You must complete the all parts marked as "TODO". Delete "TODO" after you are done.
-// Remember to addPCB sufficient comments to your code
 
 #pragma once
 #include <iostream>
@@ -34,6 +32,9 @@ public:
     unsigned int burst_time;
     // The arrival time of the process
     unsigned int arrival_time;
+    // The total waiting time of the process
+    unsigned int end_time;
+    unsigned int remaining_burst_time;
 
     /**
      * @brief Construct a new PCB object
@@ -47,6 +48,8 @@ public:
         this->priority = priority;
         this->burst_time = burst_time;
         this->arrival_time = 0;
+        this->end_time = 0;
+        this->remaining_burst_time = this->burst_time;
     }
 
     /**

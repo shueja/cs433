@@ -1,3 +1,7 @@
 CS 433 Assignment 1 report
 Jeremiah Shue
 
+The priority queue for this assignment was implemented with a binary heap. This data structure is chosen due to `O(log n)` time complexity on both insertion and removal. It is also the internal choice for the C++ std::priority_queue for this reason.
+
+For the timing results of test 2, this implementation ran in 0.85 to 0.87 seconds on the author's WSL virtual machine, and 0.45 seconds on Gradescope.
+This is far from the 0.1 seconds threshold for extra credit, but below the 1 second requirement. I was expecting faster performance, since the STL uses a heap structure as well.

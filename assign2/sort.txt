@@ -1,0 +1,10 @@
+Makefile
+README.md
+test.txt
+log.txt
+log2.txt
+ls.txt
+prog.cpp
+prog.o
+prog2
+sort.txt
