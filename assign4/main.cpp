@@ -1,14 +1,14 @@
 /**
 * Assignment 4: Producer Consumer Problem
  * @file main.cpp
- * @author ??? (TODO: your name)
+ * @author Jeremiah Shue
  * @brief The main program for the producer consumer problem.
  * @version 0.1
  */
-//You must complete the all parts marked as "TODO". Delete "TODO" after you are done.
-// Remember to add sufficient and clear comments to your code
 #include <iostream>
 #include "buffer.h"
+#include <pthread.h>
+#include <string>
 #include <unistd.h>
 
 using namespace std;
@@ -17,7 +17,6 @@ using namespace std;
 Buffer buffer;
 
 // Producer thread function
-// TODO: Add your implementation of the producer thread here
 void *producer(void *param) {
     // Each producer insert its own ID into the buffer
     // For example, thread 1 will insert 1, thread 2 will insert 2, and so on.
@@ -26,7 +25,6 @@ void *producer(void *param) {
     while (true) {
         /* sleep for a random period of time */
         usleep(rand()%1000000);
-        // TODO: Add synchronization code here
         if (buffer.insert_item(item)) {
             cout << "Producer " << item << ": Inserted item " << item << endl;
             buffer.print_buffer();
@@ -37,14 +35,12 @@ void *producer(void *param) {
 }
 
 // Consumer thread function
-// TODO: Add your implementation of the consumer thread here
 void *consumer(void *param) {
     buffer_item item;
 
     while (true) {
         /* sleep for a random period of time */
         usleep(rand() % 1000000);
-        // TODO: Add synchronization code here
         if (buffer.remove_item(&item)) {
             cout << "Consumer " << item << ": Removed item " << item << endl;
             buffer.print_buffer();
@@ -55,11 +51,20 @@ void *consumer(void *param) {
 }
 
 int main(int argc, char *argv[]) {
-    /* TODO: 1. Get command line arguments argv[1],argv[2],argv[3] */
-    /* TODO: 2. Initialize buffer and synchronization primitives */
-    /* TODO: 3. Create producer thread(s).
-     * You should pass an unique int ID to each producer thread, starting from 1 to number of threads */
-    /* TODO: 4. Create consumer thread(s) */
-    /* TODO: 5. Main thread sleep */
-    /* TODO: 6. Exit */
+    if (argc != 4) {
+        exit(1);
+    }
+    const int main_sleep = stoi(argv[1]);
+    const int prod_threads = stoi(argv[2]);
+    const int cons_threads = stoi(argv[3]);
+    buffer = Buffer(5);
+    for (int i = 1; i <= prod_threads; i++) {
+        pthread_t thread;
+        pthread_create(&thread, NULL, producer, &i);
+    }
+    for (int i = 1; i <= cons_threads; i++) {
+        pthread_t thread;
+        pthread_create(&thread, NULL, consumer, &i);
+    }
+    usleep(main_sleep * 1e6);
 }

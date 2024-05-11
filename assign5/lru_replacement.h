@@ -1,25 +1,31 @@
 /**
 * Assignment 5: Page replacement algorithms
  * @file lru_replacement.h
- * @author ??? (TODO: your name)
+ * @author Jeremiah Shue
  * @brief A class implementing the LRU page replacement algorithms
  * @version 0.1
  */
-//You must complete the all parts marked as "TODO". Delete "TODO" after you are done.
-// Remember to add sufficient and clear comments to your code
+
 
 #pragma once
 
 // Remember to add comments to your code
 
 #include "replacement.h"
+#include <list>
+#include <unordered_map>
 
 /**
  * @brief A class to simulate the least recently used (LRU) page replacement algorithm.
  */
 class LRUReplacement : public Replacement
 {
-	// TODO: Add your implementation to this class
+private:
+    std::list<int> usage_list; 
+  
+    // store references of key in cache 
+    std::unordered_map<int, std::list<int>::iterator> map; 
+
 public:
 	/**
 	 * @brief Constructor
@@ -54,5 +60,6 @@ public:
      * @return Selected victim page #
      */
     virtual int replace_page(int page_num);
-
+    void update_map(int page_num);
+    int frames_in_mem() override;
 };
